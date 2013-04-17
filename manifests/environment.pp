@@ -12,6 +12,8 @@
 #
 class perlbrew::environment {
 
+  require perlbrew::params
+
   group {
     'perlbrew':
       ensure => present,

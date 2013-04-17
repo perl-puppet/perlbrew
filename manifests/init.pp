@@ -12,9 +12,8 @@
 # Sample Usage:
 #
 class perlbrew {
-  include perlbrew::params
-  include perlbrew::install
-  include perlbrew::environment
+
+  require perlbrew::install
 
   define build ($version) {
     exec {

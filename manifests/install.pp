@@ -16,6 +16,8 @@
 #
 class perlbrew::install {
 
+  require perlbrew::environment
+
   if !defined (Package['build-essential'])
   { package
     { 'build-essential':ensure => present, }
