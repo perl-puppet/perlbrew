@@ -17,6 +17,9 @@ class perlbrew::params {
   $perlbrew_bin  = '/usr/local/bin/perlbrew'
   $cpanm_url     = 'http://github.com/miyagawa/cpanminus/raw/master/cpanm'
 
+  # automatically enable the system perlbrew for all users
+  $enable_all_users = true
+
   # allow the system to choose for us -- less chance of collisions
   $perlbrew_gid = undef
   $perlbrew_uid = undef
