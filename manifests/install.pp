@@ -32,6 +32,7 @@ class perlbrew::install {
       group   => root,
       mode    => '0755',
       source  => "puppet:///modules/${module_name}/perlbrew",
+      notify  => Exec['perlbrew_init'],
       require => [ Package['build-essential'], Package['wget'] ],
   }
 }
