@@ -41,9 +41,11 @@ class perlbrew::environment {
     'perlbrew_init':
       command => "/bin/sh -c 'umask 022; /usr/bin/env PERLBREW_ROOT=${perlbrew::params::perlbrew_root} ${perlbrew::params::perlbrew_bin} init'",
       creates => "${perlbrew::params::perlbrew_root}/perls",
-      owner   => 'perlbrew',
-      group   => 'perlbrew',
-      require => [ Group['perlbrew'], User['perlbrew'] ],
+      require => [
+        Group['perlbrew'],
+        User['perlbrew'],
+        File[$perlbrew::params::perlbrew_bin],
+      ],
   }
 
   if $perlbrew::params::enable_all_users {
