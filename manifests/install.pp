@@ -49,4 +49,16 @@ class perlbrew::install {
       source => "puppet:///modules/${module_name}/cpanm-${perlbrew::params::cpanm_version}/cpanm",
   }
   -> anchor { 'perlbrew-installed': }
+
+  # install our shell hooks
+  file {
+    '/etc/profile.d/00-perlbrew.sh':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => "export PERLBREW_ROOT=${perlbrew::params::perlbrew_root}\nsource ${perlbrew::params::perlbrew_root}/etc/bashrc",
+  }
+  -> Anchor['perlbrew-installed']
+
 }
