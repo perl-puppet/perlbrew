@@ -16,22 +16,35 @@
 #
 class perlbrew::install {
 
-  if !defined (Package['build-essential'])
-  { package
-    { 'build-essential':ensure => present, }
-  }
-
-  if !defined (Package['wget'])
-  { package
-    { 'wget':ensure => present, }
-  }
-
   file {
+    $perlbrew::params::perlbrew_root:
+      ensure  => directory,
+      mode    => '0755',
+      owner   => perlbrew,
+      group   => perlbrew,
+  }
+  -> file {
     $perlbrew::params::perlbrew_bin:
       owner   => root,
       group   => root,
       mode    => '0755',
       source  => "puppet:///modules/${module_name}/perlbrew",
-      require => [ Package['build-essential'], Package['wget'] ],
   }
+  -> exec {
+    'perlbrew_init':
+      command => "/bin/sh -c 'umask 022; /usr/bin/env PERLBREW_ROOT=${perlbrew::params::perlbrew_root} ${perlbrew::params::perlbrew_bin} init'",
+      # XXX the bash scriptie
+      creates   => "${perlbrew::params::perlbrew_root}/etc/bashrc",
+      user      => 'perlbrew',
+      group     => 'perlbrew',
+      logoutput => 'on_failure',
+  }
+  -> file {
+    $perlbrew::params::cpanm_bin:
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      source => "puppet:///modules/${module_name}/${perlbrew::params::cpanm_version}",
+  }
+  -> anchor { 'perlbrew-installed': }
 }

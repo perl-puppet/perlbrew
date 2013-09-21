@@ -28,21 +28,15 @@ class perlbrew::environment {
       system => true,
   }
 
-  file {
-    $perlbrew::params::perlbrew_root:
-      ensure  => directory,
-      mode    => '0755',
-      owner   => perlbrew,
-      group   => perlbrew,
-      require => [ Group['perlbrew'], User['perlbrew'] ],
+  # TODO: mark using stdlib's helpers
+  if !defined (Package['build-essential'])
+  { package
+    { 'build-essential':ensure => present, }
   }
 
-  exec {
-    'perlbrew_init':
-      command => "/bin/sh -c 'umask 022; /usr/bin/env PERLBREW_ROOT=${perlbrew::params::perlbrew_root} ${perlbrew::params::perlbrew_bin} init'",
-      creates => "${perlbrew::params::perlbrew_root}/perls",
-      user    => 'perlbrew',
-      group   => 'perlbrew',
-      require => [ Group['perlbrew'], User['perlbrew'] ],
+  if !defined (Package['wget'])
+  { package
+    { 'wget':ensure => present, }
   }
+
 }
