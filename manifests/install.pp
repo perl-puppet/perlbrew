@@ -41,10 +41,11 @@ class perlbrew::install {
   }
   -> file {
     $perlbrew::params::cpanm_bin:
+      ensure => file,
       owner  => 'root',
       group  => 'root',
       mode   => '0755',
-      source => "puppet:///modules/${module_name}/${perlbrew::params::cpanm_version}",
+      source => "puppet:///modules/${module_name}/cpanm-${perlbrew::params::cpanm_version}/cpanm",
   }
   -> anchor { 'perlbrew-installed': }
 }
