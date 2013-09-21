@@ -25,10 +25,11 @@ class perlbrew::install {
   }
   -> file {
     $perlbrew::params::perlbrew_bin:
-      owner   => root,
-      group   => root,
-      mode    => '0755',
-      source  => "puppet:///modules/${module_name}/perlbrew",
+      owner  => root,
+      group  => root,
+      mode   => '0755',
+      source => "puppet:///modules/${module_name}/perlbrew",
+      notify => Exec['perlbrew_init'],
   }
   -> exec {
     'perlbrew_init':
